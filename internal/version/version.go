@@ -1,4 +1,4 @@
-package version
+package version // import "github.com/JackKrasn/avault/internal/version"
 
 import (
 	"fmt"

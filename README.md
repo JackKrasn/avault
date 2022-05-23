@@ -1,4 +1,4 @@
-# bow
+# avault
 
 Deploy Kubernetes Helm Charts
 
@@ -10,7 +10,7 @@ Running it then should be as simple as:
 
 ```console
 $ make
-$ ./bin/bow
+$ ./bin/avault
 ```
 
 ### Testing
