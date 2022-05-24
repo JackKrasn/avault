@@ -36,7 +36,7 @@ build: $(BINDIR)/$(BINNAME)
 $(BINDIR)/$(BINNAME): $(SRC)
 	@echo "building ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
-	go build -ldflags '$(LDFLAGS)' -o ${BIN_DIR}/${BIN_NAME}
+	go build -ldflags '$(LDFLAGS)' -o ${BIN_DIR}/${BIN_NAME} ./cmd/avault
 
 get-deps:
 	dep ensure
