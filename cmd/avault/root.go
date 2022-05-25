@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/JackKrasn/avault/pkg/action"
 	"github.com/spf13/cobra"
 	"io"
 )
@@ -28,14 +29,17 @@ Yaml files encrypted by Ansible Vault.
 //	}
 //}
 
-func newRootCmd(out io.Writer, args []string) (*cobra.Command, error) {
+func newRootCmd(actionConfig *action.Configuration, out io.Writer, args []string) (*cobra.Command, error) {
 	cmd := &cobra.Command{
 		Use:          "avault",
 		Short:        "The utility decrypts yaml files",
 		Long:         globalUsage,
 		SilenceUsage: true,
 	}
-	cmd.AddCommand(newDecryptCmd(out))
+	flags := cmd.PersistentFlags()
+
+	settings.AddFlags(flags)
+	cmd.AddCommand(newDecryptCmd(actionConfig, out))
 	cmd.AddCommand(newVersionCmd(out))
 	return cmd, nil
 }
