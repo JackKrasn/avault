@@ -16,6 +16,7 @@ func newDecryptCmd(cfg *action.Configuration) *cobra.Command {
 		Long:    `Yaml file encrypted by Ansible Vault. This command decrypts yaml file`,
 		Args:    require.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			dec.Settings = settings
 			fileName, err := dec.Run(args[0])
 			if err != nil {
 				return err
@@ -25,8 +26,8 @@ func newDecryptCmd(cfg *action.Configuration) *cobra.Command {
 		},
 	}
 
-	f := cmd.Flags()
-	f.StringVar(&dec.Password, "password", "", "password phrase for decryption")
+	//f := cmd.Flags()
+	//f.StringVar(&dec.Password, "password", "", "password phrase for decryption")
 
 	return cmd
 }

@@ -3,6 +3,7 @@ package action
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/JackKrasn/avault/pkg/cli"
 	"github.com/ghodss/yaml"
 	vault "github.com/sosedoff/ansible-vault-go"
 	"io/ioutil"
@@ -12,9 +13,8 @@ import (
 )
 
 type Decrypt struct {
-	cfg *Configuration
-
-	Password string
+	cfg      *Configuration
+	Settings *cli.EnvSettings
 }
 
 func NewDecrypt(cfg *Configuration) *Decrypt {
@@ -27,7 +27,7 @@ func (d *Decrypt) Run(encFileName string) (string, error) {
 	decryptedFileName := encFileName + ".dec"
 	fmt.Println("Starting decryption")
 	d.cfg.Log("Performing decryption for file %s", encFileName)
-	d.cfg.Log("Password phrase: %s", d.Password)
+	d.cfg.Log("Password phrase: %s", d.Settings.Password)
 	yamlFile, err := ioutil.ReadFile(encFileName)
 	if err != nil {
 		return "", err
@@ -43,7 +43,7 @@ func (d *Decrypt) Run(encFileName string) (string, error) {
 		fmt.Printf("err: %v\n", err)
 		return "", err
 	}
-	walk(m, d.Password)
+	walk(m, d.Settings.Password)
 	fmt.Println("File was succesfully decrypted")
 	// write encypted data to the yaml file
 	data, err := yaml.Marshal(&m)
