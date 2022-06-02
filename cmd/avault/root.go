@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/JackKrasn/avault/pkg/action"
 	"github.com/spf13/cobra"
-	"io"
 )
 
 var cfgFile string
@@ -29,7 +28,7 @@ Yaml files encrypted by Ansible Vault.
 //	}
 //}
 
-func newRootCmd(actionConfig *action.Configuration, out io.Writer, args []string) (*cobra.Command, error) {
+func newRootCmd(actionConfig *action.Configuration, args []string) (*cobra.Command, error) {
 	cmd := &cobra.Command{
 		Use:          "avault",
 		Short:        "The utility decrypts yaml files",
@@ -39,8 +38,8 @@ func newRootCmd(actionConfig *action.Configuration, out io.Writer, args []string
 	flags := cmd.PersistentFlags()
 
 	settings.AddFlags(flags)
-	cmd.AddCommand(newDecryptCmd(actionConfig, out))
-	cmd.AddCommand(newVersionCmd(out))
+	cmd.AddCommand(newDecryptCmd(actionConfig))
+	cmd.AddCommand(newVersionCmd())
 	return cmd, nil
 }
 

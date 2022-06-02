@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/JackKrasn/avault/cmd/avault/require"
 	"github.com/JackKrasn/avault/pkg/action"
 	"github.com/spf13/cobra"
-	"io"
 )
 
-func newDecryptCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
+func newDecryptCmd(cfg *action.Configuration) *cobra.Command {
 	dec := action.NewDecrypt(cfg)
 	// versionCmd represents the version command
 	cmd := &cobra.Command{
@@ -18,13 +16,11 @@ func newDecryptCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 		Long:    `Yaml file encrypted by Ansible Vault. This command decrypts yaml file`,
 		Args:    require.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfg.Log("Test")
-			fmt.Println("Decryption Data:")
-			fmt.Println(args[0])
-			fmt.Println(dec.Password)
-			if err := dec.Run(args[0]); err != nil {
+			fileName, err := dec.Run(args[0])
+			if err != nil {
 				return err
 			}
+			cfg.Log("Decrypted fileName %s", fileName)
 			return nil
 		},
 	}

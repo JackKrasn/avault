@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/JackKrasn/avault/internal/version"
 	"github.com/spf13/cobra"
-	"io"
 )
 
 // versionCmd represents the version command
@@ -21,7 +20,7 @@ import (
 //	},
 //}
 
-func newVersionCmd(out io.Writer) *cobra.Command {
+func newVersionCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version number of generated code example",
