@@ -1,4 +1,4 @@
-.PHONY: build clean test help default
+.PHONY: build clean test help default release
 BIN_DIR := $(CURDIR)/bin
 BIN_NAME ?= avault
 DIST_DIRS   := find * -type d -exec
@@ -37,6 +37,13 @@ $(BINDIR)/$(BINNAME): $(SRC)
 	@echo "building ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
 	go build -ldflags '$(LDFLAGS)' -o ${BIN_DIR}/${BIN_NAME} ./cmd/avault
+
+release:
+	@echo "release ${BIN_NAME} ${VERSION}"
+	pwd
+	. env.sh
+	goreleaser --snapshot --rm-dist
+
 
 get-deps:
 	dep ensure

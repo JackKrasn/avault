@@ -1,6 +1,6 @@
 # avault
 
-Deploy Kubernetes Helm Charts
+Decrypt a yaml file  that has been decrypted with Ansible Vault.
 
 ## Getting started
 
@@ -13,6 +13,21 @@ $ make
 $ ./bin/avault
 ```
 
+The secret phrase for decryption can be specified by define environment AVAULT_PASSWORD=xxxx
+
+```bash
+export AVAULT_PASSWORD=<password_phrase>
+```
+
 ### Testing
 
 ``make test``
+
+
+### Build 
+
+Build and publish the avault with [goreleaser](https://goreleaser.com)
+
+```bash
+make release
+```
