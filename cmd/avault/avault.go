@@ -25,7 +25,7 @@ func warning(format string, v ...interface{}) {
 
 func main() {
 	actionConfig := new(action.Configuration)
-	cmd, err := newRootCmd(actionConfig, os.Args[1:])
+	cmd, err := newRootCmd(actionConfig)
 
 	if err != nil {
 		warning("%+v", err)

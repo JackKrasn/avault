@@ -18,6 +18,11 @@ builds:
     ldflags:
       -X github.com/JackKrasn/avault/internal/version.GitCommit={{ .Env.GIT_COMMIT }}{{ .Env.GIT_DIRTY }} 
       -X github.com/JackKrasn/avault/internal/version.BuildDate={{ .Env.BUILD_DATE }}
+      {{ if .IsSnapshot }} 
+      -X github.com/JackKrasn/avault/internal/version.Version={{ .Env.SNAPSHOT_VERSION }}
+      {{ else }}
+      -X github.com/JackKrasn/avault/internal/version.Version={{ .Env.VERSION }}
+      {{ end }}
 archives:
   - replacements:
       darwin: Darwin
@@ -28,7 +33,7 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  name_template: "{{ .Env.SNAPSHOT_VERSION }}"
 changelog:
   sort: asc
   filters:
