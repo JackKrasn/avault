@@ -43,8 +43,9 @@ release:
 	. env.sh
 	goreleaser --rm-dist
 
-release-snapshot:
+snapshot:
 	@echo "release ${BIN_NAME} ${VERSION}"
+	pwd
 	. env.sh
 	goreleaser --snapshot --rm-dist
 
