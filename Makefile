@@ -40,10 +40,13 @@ $(BINDIR)/$(BINNAME): $(SRC)
 
 release:
 	@echo "release ${BIN_NAME} ${VERSION}"
-	pwd
+	. env.sh
+	goreleaser --rm-dist
+
+release-snapshot:
+	@echo "release ${BIN_NAME} ${VERSION}"
 	. env.sh
 	goreleaser --snapshot --rm-dist
-
 
 get-deps:
 	dep ensure
