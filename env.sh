@@ -1,0 +1,5 @@
+export VERSION=$(grep "const Version " internal/version/version.go | sed -E 's/.*"(.+)"$$/\1/')
+export GIT_COMMIT=$(git rev-parse HEAD)
+export GIT_DIRTY=$(test -n "`git status --porcelain`" && echo "+CHANGES" || true)
+export BUILD_DATE=$(date '+%Y-%m-%d-%H:%M:%S')
+export GIT_TAG=$(git describe --tags --abbrev=0 --exact-match 2>/dev/null)
