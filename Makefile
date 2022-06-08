@@ -7,7 +7,10 @@ DIST_DIRS   := find * -type d -exec
 LDFLAGS    := -w -s
 
 # Rebuild the binary if any of these files change
+
+
 SRC := $(shell find . -type f -name '*.go' -print) go.mod go.sum
+.EXPORT_ALL_VARIABLES:
 
 VERSION := $(shell grep "const Version " internal/version/version.go | sed -E 's/.*"(.+)"$$/\1/')
 GIT_COMMIT=$(shell git rev-parse HEAD)
@@ -45,8 +48,8 @@ release:
 
 snapshot:
 	@echo "release ${BIN_NAME} ${VERSION}"
-	pwd
 	. env.sh
+	env
 	goreleaser --snapshot --rm-dist
 
 get-deps:

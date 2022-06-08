@@ -31,3 +31,13 @@ Build and publish the avault with [goreleaser](https://goreleaser.com)
 ```bash
 make release
 ```
+
+## Decrypt file
+
+```bash
+avault decrypt file.yaml -p <password phrase>
+```
+
+Or specify environment variable at first `AVAULT_PASSWORD=<password phrase>`
+
+And then run `avault decrypt file.yaml`
