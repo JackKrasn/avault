@@ -1,4 +1,4 @@
-.PHONY: build clean test help default
+.PHONY: build clean test help default release
 BIN_DIR := $(CURDIR)/bin
 BIN_NAME ?= avault
 DIST_DIRS   := find * -type d -exec
@@ -7,7 +7,10 @@ DIST_DIRS   := find * -type d -exec
 LDFLAGS    := -w -s
 
 # Rebuild the binary if any of these files change
+
+
 SRC := $(shell find . -type f -name '*.go' -print) go.mod go.sum
+.EXPORT_ALL_VARIABLES:
 
 VERSION := $(shell grep "const Version " internal/version/version.go | sed -E 's/.*"(.+)"$$/\1/')
 GIT_COMMIT=$(shell git rev-parse HEAD)
@@ -37,6 +40,17 @@ $(BINDIR)/$(BINNAME): $(SRC)
 	@echo "building ${BIN_NAME} ${VERSION}"
 	@echo "GOPATH=${GOPATH}"
 	go build -ldflags '$(LDFLAGS)' -o ${BIN_DIR}/${BIN_NAME} ./cmd/avault
+
+release:
+	@echo "release ${BIN_NAME} ${VERSION}"
+	. env.sh
+	goreleaser --rm-dist
+
+snapshot:
+	@echo "release ${BIN_NAME} ${VERSION}"
+	. env.sh
+	env
+	goreleaser --snapshot --rm-dist
 
 get-deps:
 	dep ensure
