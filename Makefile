@@ -12,14 +12,19 @@ LDFLAGS    := -w -s
 SRC := $(shell find . -type f -name '*.go' -print) go.mod go.sum
 .EXPORT_ALL_VARIABLES:
 
-VERSION := $(shell grep "const Version " internal/version/version.go | sed -E 's/.*"(.+)"$$/\1/')
 GIT_COMMIT=$(shell git rev-parse HEAD)
 GIT_DIRTY=$(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)
 BUILD_DATE=$(shell date '+%Y-%m-%d-%H:%M:%S')
 GIT_TAG=$(shell git describe --tags --abbrev=0 --exact-match 2>/dev/null)
 
+ifdef VERSION
+	BINARY_VERSION = $(VERSION)
+endif
+BINARY_VERSION ?= ${GIT_TAG}
+
 LDFLAGS += -X github.com/JackKrasn/avault/internal/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY}
 LDFLAGS += -X github.com/JackKrasn/avault/internal/version.BuildDate=${BUILD_DATE}
+LDFLAGS += -X github.com/JackKrasn/avault/internal/version.Version=${BINARY_VERSION}
 
 default: test
 
@@ -32,7 +37,9 @@ help:
 	
 	@echo '    make clean           Clean the directory tree.'
 	@echo '    make info            Print info'
-
+	@echo '    make release         Build and publish artifacts'
+	@echo '    make snapshot        Build snapshot version'
+	@echo '    make test            Run tests'
 
 build: $(BINDIR)/$(BINNAME)
 
@@ -43,13 +50,11 @@ $(BINDIR)/$(BINNAME): $(SRC)
 
 release:
 	@echo "release ${BIN_NAME} ${VERSION}"
-	. env.sh
+	autotag
 	goreleaser --rm-dist
 
 snapshot:
 	@echo "release ${BIN_NAME} ${VERSION}"
-	. env.sh
-	env
 	goreleaser --snapshot --rm-dist
 
 get-deps:
@@ -59,8 +64,8 @@ test:
 	go test ./...
 
 clean:
-	 @echo "deleting ${BIN_DIR}"
-	 @rm -rf '$(BIN_DIR)'
+	 @echo "deleting ${BIN_DIR}" ./dist
+	 @rm -rf '$(BIN_DIR)' ./dist
 
 .PHONY: info
 info:
