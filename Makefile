@@ -37,7 +37,9 @@ help:
 	
 	@echo '    make clean           Clean the directory tree.'
 	@echo '    make info            Print info'
-
+	@echo '    make release         Build and publish artifacts'
+	@echo '    make snapshot        Build snapshot version'
+	@echo '    make test            Run tests'
 
 build: $(BINDIR)/$(BINNAME)
 
