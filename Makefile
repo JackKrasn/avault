@@ -8,25 +8,22 @@ LDFLAGS    := -w -s
 
 # Rebuild the binary if any of these files change
 
-
 SRC := $(shell find . -type f -name '*.go' -print) go.mod go.sum
 .EXPORT_ALL_VARIABLES:
 
 GIT_COMMIT=$(shell git rev-parse HEAD)
-GIT_DIRTY=$(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)
+GIT_DIRTY = $(shell test -n "`git status --porcelain`" && echo "dirty" || echo "clean")
 BUILD_DATE=$(shell date '+%Y-%m-%d-%H:%M:%S')
 GIT_TAG=$(shell git describe --tags --abbrev=0 --exact-match 2>/dev/null)
-
-ifdef VERSION
-	BINARY_VERSION = $(VERSION)
-endif
-BINARY_VERSION ?= ${GIT_TAG}
+CURRENT_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+SNAPSHOT_VERSION=$(shell autotag -n -p dev -b ${CURRENT_BRANCH})
+VERSION=$(shell autotag -n)
 
 LDFLAGS += -X github.com/JackKrasn/avault/internal/version.GitCommit=${GIT_COMMIT}${GIT_DIRTY}
 LDFLAGS += -X github.com/JackKrasn/avault/internal/version.BuildDate=${BUILD_DATE}
-LDFLAGS += -X github.com/JackKrasn/avault/internal/version.Version=${BINARY_VERSION}
+LDFLAGS += -X github.com/JackKrasn/avault/internal/version.Version=${SNAPSHOT_VERSION}
 
-default: test
+default: build
 
 help:
 	@echo 'Management commands for avault:'
@@ -44,17 +41,17 @@ help:
 build: $(BINDIR)/$(BINNAME)
 
 $(BINDIR)/$(BINNAME): $(SRC)
-	@echo "building ${BIN_NAME} ${VERSION}"
+	@echo "building ${BIN_NAME} ${SNAPSHOT_VERSION}"
 	@echo "GOPATH=${GOPATH}"
 	go build -ldflags '$(LDFLAGS)' -o ${BIN_DIR}/${BIN_NAME} ./cmd/avault
 
 release:
 	@echo "release ${BIN_NAME} ${VERSION}"
 	autotag
-	goreleaser --rm-dist
+	goreleaser --parallelism 2 --rm-dist
 
 snapshot:
-	@echo "release ${BIN_NAME} ${VERSION}"
+	@echo "release ${BIN_NAME} ${SNAPSHOT_VERSION}"
 	goreleaser --snapshot --rm-dist
 
 get-deps:

@@ -5,13 +5,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-
 var globalUsage = `The utility decrypts yaml files.
-Yaml files encrypted by Ansible Vault.
+Yaml files are encrypted by Ansible Vault.
 `
 
-func newRootCmd(actionConfig *action.Configuration, args []string) (*cobra.Command, error) {
+func newRootCmd(actionConfig *action.Configuration) (*cobra.Command, error) {
 	cmd := &cobra.Command{
 		Use:          "avault",
 		Short:        "The utility decrypts yaml files",

@@ -1,72 +1,39 @@
-# avault
+# Avault
 
-Decrypt a yaml file  that has been decrypted with Ansible Vault.
+Avault is a tool for decrypting yaml files. Yaml files are encrypted by Ansible Vault. 
 
-## Getting started
+Use Avault to:
 
-This project requires Go to be installed. On OS X with Homebrew you can just run `brew install go`.
+- Decrypt `values.yaml` for helm. Use as a secret driver in [helm-secret](https://github.com/JackKrasn/helm-secrets) plugin. 
+- Decrypt any yaml file which are encrypted by Ansible Vault. 
 
-Running it then should be as simple as:
-
-```console
-$ make
-$ ./bin/avault
-```
-
-The secret phrase for decryption can be specified by define environment AVAULT_PASSWORD=xxxx
-
-```bash
-export AVAULT_PASSWORD=<password_phrase>
-```
-
-### Testing
-
-``make test``
+## Install
 
 
-### Build
+Binary downloads of the Avault utility can be found on [the Releases page](https://github.com/JackKrasn/helm-secrets/releases/latest).
 
-``make build``
-
-or build for different platforms
-
-``make snaphost``
+Unpack the `avault` binary and add it to your PATH and you are good to go!
 
 
-### Release
+## Usage
 
-Build and publish the avault with [goreleaser](https://goreleaser.com).
-
-Goreleaser and autotag must be installed.
-
-```bash
-make release
-```
-
-This command run `autotag`  and then `goreleaser`.
-
-At first `autotag`  determine what the next tag should be and then creates the tag by executing git tag.
-
-[autog](https://github.com/pantheon-systems/autotag)
-
-Then `goreleaser` build project and publish artifacts.
-
-In order to release to GitHub, you'll need to export a GITHUB_TOKEN environment variable, 
-which should contain a valid GitHub token with the repo scope. 
-
-It will be used to deploy releases to your GitHub repository.
-
-[Read more](https://goreleaser.com/quick-start/)
-
-## Decrypt file
+For decrypting  `file.yaml` use:
 
 ```bash
 avault decrypt file.yaml -p <password phrase>
 ```
 
-Or specify environment variable at first `AVAULT_PASSWORD=<password phrase>`
+`file.yaml.dec` it's result of the work avault utility. The encrypted values in file will be decrypted. 
 
-And then run `avault decrypt file.yaml`
+The decrypted file saves in the same path where the original file is located.
+
+The secret phrase for decryption can be specified by define environment variable `AVAULT_PASSWORD`
+
+```bash
+export AVAULT_PASSWORD='<password_phrase>'
+```
+
+## CLI Reference
 
 ```bash
 The utility decrypts yaml files.
@@ -88,3 +55,40 @@ Flags:
 
 Use "avault [command] --help" for more information about a command.
 ```
+
+## Testing
+
+``make test``
+
+## Build
+
+``make build``
+
+or build for different platforms
+
+``make snaphost``
+
+## Release
+
+Build and publish the avault with [goreleaser](https://goreleaser.com).
+
+Goreleaser and autotag must be installed.
+
+```bash
+make release
+```
+
+This command run `autotag`  and then `goreleaser`.
+
+At first `autotag`  determine what the next tag should be and then creates the tag by executing git tag.
+
+[autotag](https://github.com/pantheon-systems/autotag)
+
+Then `goreleaser` build project and publish artifacts.
+
+In order to release to GitHub, you'll need to export a GITHUB_TOKEN environment variable, 
+which should contain a valid GitHub token with the repo scope. 
+
+It will be used to deploy releases to your GitHub repository.
+
+[Read more](https://goreleaser.com/quick-start/)

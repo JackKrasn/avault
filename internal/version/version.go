@@ -9,7 +9,7 @@ import (
 var GitCommit string
 
 // Version returns the main version number that is being run at the moment.
-var Version = ""
+var Version string
 
 // BuildDate returns the date the binary was built
 var BuildDate = ""
