@@ -7,6 +7,16 @@ import (
 
 var globalUsage = `The utility decrypts yaml files.
 Yaml files are encrypted by Ansible Vault.
+
+Common actions for Helm:
+
+- avault decrypt:    decrypt yaml file. File is encrypted by Ansible Vault
+
+Environment variables:
+
+| Name                               | Description                                                     |
+|------------------------------------|-----------------------------------------------------------------|
+| $AVAULT_PASSWORD                   | set a password phrase for decrypting                            |
 `
 
 func newRootCmd(actionConfig *action.Configuration) (*cobra.Command, error) {

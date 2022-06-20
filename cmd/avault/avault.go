@@ -37,6 +37,6 @@ func main() {
 		}
 	})
 	if err := cmd.Execute(); err != nil {
-		println("%+v", err)
+		os.Exit(1)
 	}
 }
