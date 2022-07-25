@@ -71,7 +71,15 @@ func walk(data map[string]interface{}, passwordPhrase string) {
 				if err != nil {
 					log.Fatalf("Can'not decrypt key: %v\n", key)
 				}
+				log.Println("String was successfully decrypted. Key:", key)
 				data[key] = decryptedStr
+			}
+		}
+		if reflect.TypeOf(el).Kind() == reflect.Slice {
+			for _, value := range el.([]interface{}) {
+				if reflect.TypeOf(value).Kind() == reflect.Map {
+					walk(value.(map[string]interface{}), passwordPhrase)
+				}
 			}
 		}
 	}
