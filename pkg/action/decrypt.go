@@ -61,6 +61,9 @@ func (d *Decrypt) Run(encFileName string) (string, error) {
 
 func walk(data map[string]interface{}, passwordPhrase string) {
 	for key, el := range data {
+		if el == nil {
+			continue
+		}
 		if reflect.TypeOf(el).Kind() == reflect.Map {
 			walk(el.(map[string]interface{}), passwordPhrase)
 		}
