@@ -26,8 +26,8 @@ func newDecryptCmd(cfg *action.Configuration) *cobra.Command {
 		},
 	}
 
-	//f := cmd.Flags()
-	//f.StringVar(&dec.Password, "password", "", "password phrase for decryption")
+	f := cmd.Flags()
+	f.BoolVarP(&dec.OutputDir, "output", "o", false, "save decrypted file in the same directory")
 
 	return cmd
 }
