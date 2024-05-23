@@ -75,7 +75,7 @@ func walk(data map[string]interface{}, passwordPhrase string, dryRun bool) {
 		if reflect.TypeOf(el).Kind() == reflect.String {
 			if isEncrypted(el.(string)) {
 				if dryRun {
-					data[key] = "\"*****\""
+					data[key] = "<*****>"
 				} else {
 					// Decrypt secret data
 					decryptedStr, err := vault.Decrypt(el.(string), passwordPhrase)
