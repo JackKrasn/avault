@@ -42,7 +42,7 @@ func (d *Decrypt) Run(encFileName string) (string, error) {
 		fmt.Printf("err: %v\n", err)
 		return "", err
 	}
-	walk(m, d.Settings.Password)
+	walk(m, d.Settings.Password, d.Settings.Dry)
 	// write encypted data to the yaml file
 	data, err := yaml.Marshal(&m)
 
@@ -64,28 +64,32 @@ func (d *Decrypt) Run(encFileName string) (string, error) {
 	return decryptedFileName, nil
 }
 
-func walk(data map[string]interface{}, passwordPhrase string) {
+func walk(data map[string]interface{}, passwordPhrase string, dryRun bool) {
 	for key, el := range data {
 		if el == nil {
 			continue
 		}
 		if reflect.TypeOf(el).Kind() == reflect.Map {
-			walk(el.(map[string]interface{}), passwordPhrase)
+			walk(el.(map[string]interface{}), passwordPhrase, dryRun)
 		}
 		if reflect.TypeOf(el).Kind() == reflect.String {
 			if isEncrypted(el.(string)) {
-				// Decrypt secret data
-				decryptedStr, err := vault.Decrypt(el.(string), passwordPhrase)
-				if err != nil {
-					log.Fatalf("Can'not decrypt key: %v\n", key)
+				if dryRun {
+					data[key] = "\"*****\""
+				} else {
+					// Decrypt secret data
+					decryptedStr, err := vault.Decrypt(el.(string), passwordPhrase)
+					if err != nil {
+						log.Fatalf("Can'not decrypt key: %v\n", key)
+					}
+					data[key] = decryptedStr
 				}
-				data[key] = decryptedStr
 			}
 		}
 		if reflect.TypeOf(el).Kind() == reflect.Slice {
 			for _, value := range el.([]interface{}) {
 				if reflect.TypeOf(value).Kind() == reflect.Map {
-					walk(value.(map[string]interface{}), passwordPhrase)
+					walk(value.(map[string]interface{}), passwordPhrase, dryRun)
 				}
 			}
 		}
