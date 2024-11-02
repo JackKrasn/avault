@@ -13,6 +13,8 @@ import (
 	vault "github.com/sosedoff/ansible-vault-go"
 )
 
+const maskedPassword = "<*****>"
+
 type Decrypt struct {
 	cfg       *Configuration
 	Settings  *cli.EnvSettings
@@ -74,9 +76,8 @@ func walk(data map[string]interface{}, passwordPhrase string, dryRun bool) {
 		}
 		if reflect.TypeOf(el).Kind() == reflect.String {
 			if isEncrypted(el.(string)) {
-				if dryRun {
-					data[key] = "<*****>"
-				} else {
+				data[key] = maskedPassword
+				if !dryRun {
 					// Decrypt secret data
 					decryptedStr, err := vault.Decrypt(el.(string), passwordPhrase)
 					if err != nil {
@@ -97,8 +98,5 @@ func walk(data map[string]interface{}, passwordPhrase string, dryRun bool) {
 }
 
 func isEncrypted(val string) bool {
-	if strings.HasPrefix(val, "$ANSIBLE_VAULT;1.1;AES256") {
-		return true
-	}
-	return false
+	return strings.HasPrefix(val, "$ANSIBLE_VAULT;1.1;AES256")
 }
