@@ -25,7 +25,7 @@ func New() *EnvSettings {
 func (s *EnvSettings) AddFlags(fs *pflag.FlagSet) {
 	fs.BoolVar(&s.Debug, "debug", s.Debug, "enable verbose output")
 	fs.StringVarP(&s.Password, "password", "p", s.Password, "password phrase for decryption")
-	fs.BoolVar(&s.Debug, "dry", s.Dry, "dry-run, do not actually decrypt")
+	fs.BoolVar(&s.Dry, "dry", s.Dry, "replace values with mask instead of decryption")
 }
 
 func (s *EnvSettings) EnvVars() map[string]string {
