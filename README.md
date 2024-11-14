@@ -33,6 +33,20 @@ The secret phrase for decryption can be specified by define environment variable
 export AVAULT_PASSWORD='<password_phrase>'
 ```
 
+### Dry run
+
+Sometimes it might be usefully to skip the actual decryption of values and replace encrypted values with the mask, e.g. avault has been called by an external program and the password is unknown and can't be set
+```bash
+avault decrypt file.yaml --dry
+```
+
+The dry-run mode can be enabled or disabled by setting the environment variable `AVAULT_DRY`
+
+```bash
+export AVAULT_DRY=true
+export AVAULT_DRY=false
+```
+
 ## CLI Reference
 
 ```bash
@@ -50,6 +64,7 @@ Available Commands:
 
 Flags:
       --debug             enable verbose output
+      --dry               replace values with the mask instead of decryption
   -h, --help              help for avault
   -p, --password string   password phrase for decryption
 

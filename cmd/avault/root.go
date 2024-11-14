@@ -17,6 +17,8 @@ Environment variables:
 | Name                               | Description                                                     |
 |------------------------------------|-----------------------------------------------------------------|
 | $AVAULT_PASSWORD                   | set a password phrase for decrypting                            |
+| $AVAULT_DEBUG                      | enable verbose output                                       	   |
+| $AVAULT_DRY                        | replace values with mask instead of decryption                  |
 `
 
 func newRootCmd(actionConfig *action.Configuration) (*cobra.Command, error) {
