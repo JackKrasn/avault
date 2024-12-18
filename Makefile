@@ -48,7 +48,7 @@ $(BINDIR)/$(BINNAME): $(SRC)
 release:
 	@echo "release ${BIN_NAME} ${VERSION}"
 	autotag
-	goreleaser --parallelism 2 --rm-dist
+	goreleaser release --clean
 
 snapshot:
 	@echo "release ${BIN_NAME} ${SNAPSHOT_VERSION}"
